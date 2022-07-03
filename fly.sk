@@ -1,0 +1,42 @@
+#this is for non-pvp servers, meaning when the player is hurt they can still /fly!
+on load:
+ broadcast "&aFly skript by redstone_pro180 loaded!"
+
+command /fly:
+ executable by: players
+ permission: fly
+ trigger:
+  {affap} is true
+  if {fly::%player%} is true:
+   set player's flight mode to false
+   set {fly::%player%} to false
+  else:
+   set player's flight mode to true
+   set {fly::%player%} to true
+   
+#this is for pvp servers, meaning if the player is hurt they will not be able to /fly.
+#when pasting this replace "/fly2" with "/fly".
+on load:
+ set {incombat::*} to false
+ broadcast "&aFly skript by redstone_pro180 loaded!"
+
+command /fly2:
+ executable by: players
+ permission: fly
+ trigger:
+  {affap} is true
+  {incombat::%player%} is false
+  if {fly::%player%} is true:
+   set player's flight mode to false
+   set {fly::%player%} to false
+  else:
+   set player's flight mode to true
+   set {fly::%player%} to true
+   
+on damage:
+ victim is player
+ {incombat::%victim%} is false
+ set {incombat::%victim%} to true
+ send "&cYou are in combat! you can't /fly for 5 seconds!" to victim
+ wait 5 seconds
+ set {incombat::%victim%} to false
